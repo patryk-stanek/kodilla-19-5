@@ -1,3 +1,38 @@
 .App {
-    background-color: orange;
+    background-image: linear-gradient(to bottom right, orangered, yellow);
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-content: center;
+    align-items: center;
+    height: 100vh;
+    width: 100vw;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+
+.App h1 {
+    font-weight: 100;
+    font-size: 70px;
+    margin-bottom: -20px;
+}
+
+.App h2 {
+    font-weight: 100;
+    font-size: 20px;
+}
+
+.App input {
+    border: 1px solid white;
+    padding: 10px;
+    color: #fff;
+    background-color: transparent;
+    font-size: 20px;
+}
+
+.App img {
+    padding: 10px;
+    border: 1px solid white;
+    margin-top: 20px;
 }

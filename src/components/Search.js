@@ -1,15 +1,18 @@
 import React from 'react';
 
 class Search extends React.Component {
-    
-    getInitialState() {
-        return {
+    constructor(props) {
+        super(props);
+        this.state = {
             searchingText: ''
-        };
+        }
+        this.handleChange = this.handleChange.bind(this);
+        this.handleKeyUp = this.handleKeyUp.bind(this);
     }
 
     handleChange(event) {
         const searchingText = event.target.value;
+
         this.setState({
             searchingText: searchingText
         });

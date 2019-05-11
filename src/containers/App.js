@@ -10,52 +10,66 @@ const GIPHY_API_URL = 'https://api.giphy.com';
 const GIPHY_PUB_KEY = '3xV3sWmEl2phXFsqVKeKnuRDAihSHMOJ';
 
 class App extends React.Component {
-
-    getInitialState() {
-
-        return {
+    constructor(props) {
+        super(props);
+        this.state = {
             loading: false,
             searchingText: '',
             gif: {}
         }
-    }
-
-    handleSearch(searchingText) {
-
-        this.setState({
-            loading: true
-        });
-        this.getGif(searchingText, function(gif) {
-            this.setState({
-                loading: false,
-                gif: gif,
-                searchingText: seachingText
-            });
-        }.bind(this));
+        this.handleSearch = this.handleSearch.bind(this);
     }
 
     getGif(searchingText) {
-        const url = GIPHY_API_URL + '/v1/gifs/random?api_key=' + GIPHY_PUB_KEY + '&tag=' + searchingText;
-        const xhr = new XMLHttpRequest();
-        xhr.open('GET', url);
-        xhr.onload = function() {
-            if (xhr.status === 200) {
-                const data = JSON.parse(xhr.responseText).data;
-                const gif = {
-                    url: data.fixed_width_downsampled_url,
-                    sourceUrl: data.url
-                };
-                callback(gif);
-            }
-        };
-        xhr.send();
+        return new Promise((resolve, reject) => {
+            const url = `${GIPHY_API_URL}/v1/gifs/random?api_key=${GIPHY_PUB_KEY}&tag=${searchingText}`;
+            console.log('getGif -> ' + url);
+            const json = response => response.json()
+            let xhr = new XMLHttpRequest();
+            return fetch(url)
+                .then(json)
+                .then(() => {
+                    xhr.open('GET', url);
+                    xhr.onload = () => {
+                        if (xhr.status === 200) {
+                            const data = JSON.parse(xhr.responseText).data;
+                            const gif = {
+                                url: data.fixed_width_downsampled_url,
+                                sourceURL: data.url
+                            }
+                            resolve(gif);
+                        } else {
+                            reject(new Error(this.statusText));
+                        }
+                    };
+                    xhr.onerror = () => reject(console.log('fail2'));
+                    xhr.send(searchingText);
+                })
+        })
+    }
+
+    handleSearch(searchingText) {
+        this.setState({
+            loading: true
+        });
+        this.getGif(searchingText)
+            .then((response) => {
+                console.log(response.url);
+                this.setState({
+                    loading: false,
+                    gif: {
+                        url: response.url,
+                    },
+                    searchingText: searchingText
+                })
+            })
     }
 
     render() {
         return (
-            <div>
+            <div className={style.App}>
                 <h1>Wyszukiwarka GIFów!</h1>
-                <p>Znajdź gifa na <a href='http://giphy.com'>giphy</a>. Wciśnij enter aby pobrać gif!</p>
+                <h2>Znajdź gifa na <a href='http://giphy.com'>giphy</a>. Wciśnij enter aby pobrać gif!</h2>
                 <Search onSearch={this.handleSearch}/>
                 <Gif
                     loading={this.state.loading}
