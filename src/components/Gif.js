@@ -15,11 +15,9 @@ class Gif extends React.Component {
         const url = this.props.loading ? GIPHY_LOADING_URL : this.props.url;
 
         return (
-            <div>
-                <a href={this.getUrl()} title='view this on giphy' target='new'>
-                    <img id='gif' src={url} />
-                </a>
-            </div>
+            <a href={this.getUrl()} title='view this on giphy' target='_blank'>
+                <img id='gif' src={url} />
+            </a>
         )
     }
 }

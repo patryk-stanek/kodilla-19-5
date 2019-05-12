@@ -66,16 +66,19 @@ class App extends React.Component {
     }
 
     render() {
+
         return (
             <div className={style.App}>
                 <h1>Wyszukiwarka GIFów!</h1>
                 <h2>Znajdź gifa na <a href='http://giphy.com'>giphy</a>. Wciśnij enter aby pobrać gif!</h2>
                 <Search onSearch={this.handleSearch}/>
-                <Gif
-                    loading={this.state.loading}
-                    url={this.state.gif.url}
-                    sourceUrl={this.state.gif.sourceUrl}
-                />
+                {this.state.gif.url && (
+                    <Gif 
+                        loading={this.state.loading}
+                        url={this.state.gif.url}
+                        sourceUrl={this.state.gif.sourceUrl}
+                    />
+                )}
             </div>
         );
     }
